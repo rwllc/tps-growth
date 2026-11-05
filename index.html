@@ -27,6 +27,10 @@ a{color:inherit;text-decoration:none}
   --ink:#ede6d8;
   --muted:#8a8070;
   --faint:#2e2a24;
+  --blue:#4089c9;
+  --blue-lt:#5ba4e0;
+  --blue-dim:rgba(64,137,201,0.10);
+  --blue-border:rgba(64,137,201,0.24);
   --max:1100px;
   --r:10px;
 }
@@ -154,7 +158,7 @@ h2{
   padding:0.7rem 1.3rem;font-size:0.8rem;color:var(--muted);cursor:pointer;
   border-bottom:2px solid transparent;transition:color .18s,border-color .18s;user-select:none;
 }
-.pt.active{color:var(--gold);border-color:var(--gold)}
+.pt.active{color:var(--blue);border-color:var(--blue)}
 .platform-content{padding:1.5rem;min-height:320px;font-size:0.85rem}
 .pane{display:none}.pane.active{display:block}
 
@@ -173,9 +177,11 @@ h2{
   font-size:0.8rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:0.4rem;
 }
 .cap-send{
-  padding:0.5rem 1.1rem;background:var(--gold);color:#140f00;
+  padding:0.5rem 1.1rem;background:var(--blue);color:#fff;
   border:none;border-radius:6px;font-size:0.8rem;font-weight:800;cursor:pointer;
+  transition:background .15s;
 }
+.cap-send:hover{background:var(--blue-lt)}
 .cap-label{font-size:0.73rem;color:var(--muted);margin-bottom:0.4rem;display:block;text-transform:uppercase;letter-spacing:0.08em}
 .cap-textarea{
   width:100%;background:#0a0a0a;border:1px solid #282828;border-radius:6px;
@@ -185,7 +191,7 @@ h2{
 
 /* Strategy log pane */
 .log-entry{background:#0a0a0a;border:1px solid #262626;border-radius:8px;padding:1.1rem}
-.log-date{font-size:0.7rem;color:var(--gold);margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:0.09em;font-weight:700}
+.log-date{font-size:0.7rem;color:var(--blue);margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:0.09em;font-weight:700}
 .log-summary{font-size:0.84rem;color:var(--ink);margin-bottom:0.9rem;line-height:1.65}
 .log-block{margin-bottom:0.75rem}
 .log-block-title{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:0.35rem;font-weight:700}
@@ -194,14 +200,14 @@ h2{
 .log-item.act::before{content:"◎";color:var(--gold);flex-shrink:0}
 .log-item.q::before{content:"?";color:var(--muted);flex-shrink:0}
 .log-tags{margin-top:0.9rem;display:flex;gap:0.4rem;flex-wrap:wrap}
-.log-tag{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:0.7rem;padding:0.15em 0.65em;border-radius:20px}
+.log-tag{background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--blue);font-size:0.7rem;padding:0.15em 0.65em;border-radius:20px}
 
 /* Scorecard pane */
 .sc-week{font-size:0.72rem;color:var(--muted);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.09em;font-weight:700}
 .sc-row{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0;border-bottom:1px solid #1e1e1e}
 .sc-metric{font-size:0.84rem;color:var(--muted)}
 .sc-right{display:flex;align-items:center;gap:0.5rem}
-.sc-val{font-size:0.9rem;font-weight:800;color:var(--ink)}
+.sc-val{font-size:0.9rem;font-weight:800;color:var(--blue)}
 .sc-delta{font-size:0.72rem;padding:0.1em 0.5em;border-radius:4px}
 .up{background:rgba(90,170,90,0.14);color:#7acf7a}
 .dn{background:rgba(170,90,90,0.14);color:#cf7a7a}
@@ -419,9 +425,9 @@ footer{padding:2rem;text-align:center;border-top:1px solid var(--faint);font-siz
         <p>Landscape + Parking + Winter Service in one contract. For facilities managers who hate managing three vendors, you're the only call they need to make. That bundled value hasn't been sold at scale — yet. That's not a problem. That's the opportunity.</p>
       </div>
       <div class="card">
-        <span class="card-icon">📊</span>
-        <h3>60% Win Rate — With Room</h3>
-        <p>A 2-hour estimate turnaround is currently the ceiling. Speed moves the win rate — fast. At scale, a 7-point improvement on your bid volume adds over $280K in net revenue. That's year-one math, not a 5-year projection.</p>
+        <span class="card-icon">⏱</span>
+        <h3>The Speed-to-Win Equation</h3>
+        <p>The industry benchmark is clear: contractors who return estimates within 24 hours win at 60% or better. Right now, TPS has one estimator and a backlog that stretches days — sometimes a week. By then, the client has moved on. That's not a sales problem. It's a throughput problem. AI solves throughput.</p>
       </div>
     </div>
   </div>
@@ -557,13 +563,13 @@ footer{padding:2rem;text-align:center;border-top:1px solid var(--faint);font-siz
           <div class="sc-week">Sample Scorecard — Illustrative · Targets set from your actuals in month one</div>
           <div class="sc-row">
             <span class="sc-metric">Estimate Turnaround (avg)</span>
-            <div class="sc-right"><span class="sc-val">31 hrs</span><span class="sc-delta up">↓ from 48</span></div>
-            <span class="sc-target">Target: &lt;36 hrs</span>
+            <div class="sc-right"><span class="sc-val">&lt;24 hrs</span><span class="sc-delta up">↓ from days</span></div>
+            <span class="sc-target">Target state</span>
           </div>
           <div class="sc-row">
             <span class="sc-metric">Quote Win Rate</span>
-            <div class="sc-right"><span class="sc-val">63%</span><span class="sc-delta up">↑ from 60%</span></div>
-            <span class="sc-target">Target: 67%</span>
+            <div class="sc-right"><span class="sc-val">60%+</span><span class="sc-delta up">↑ from baseline</span></div>
+            <span class="sc-target">Target state</span>
           </div>
           <div class="sc-row">
             <span class="sc-metric">Active Federal Bids</span>
@@ -678,9 +684,11 @@ footer{padding:2rem;text-align:center;border-top:1px solid var(--faint);font-siz
     <div class="win-item">
       <div class="win-num">1</div>
       <div class="win-body">
-        <h4>AI-Assisted Estimating</h4>
-        <p>Your estimators spend two hours per estimate pulling site data, calculating materials, and formatting proposals. With AI assistance, that drops to 20 minutes. That's not an improvement in speed — it's the difference between 5 estimates a day and 25. More estimates, faster turnaround, higher win rate from responsiveness alone.</p>
-        <span class="win-impact">Impact: Every 5-point win rate gain × your actual bid volume = real, calculable revenue lift — baseline set in month one</span>
+        <h4>AI-Assisted Estimating — The Biggest Lever in the Business</h4>
+        <p>Here's the situation: one estimator, two hours per estimate, a backlog that means clients sometimes wait a week to hear back. In a competitive bid environment, that's not a small problem — that's a close-rate problem. Most of the work doesn't get lost on price. It gets lost on silence.</p>
+        <p>The industry data is consistent: contractors who return estimates within 24 hours win at 60% or better. Under 24 hours could be a guarantee-able differentiator — a standard commitment nobody else in the market is making. With AI processing the site data, materials, and proposal formatting, the same estimator can get the work out the door the same day.</p>
+        <p style="margin-top:0.5rem;font-size:0.86rem;color:var(--muted)">The goal isn't a modest improvement. If the current win rate is in the 20–30% range and 60%+ is achievable with 24-hour turnarounds, that's not a 7-point lift — it may be more than doubling the close rate on the same bid volume. That's the number worth building the whole estimating workflow around.</p>
+        <span class="win-impact">The core opportunity: 24-hour estimate turnaround, every time — potentially a guarantee. Win rate impact to be calculated from your actual bid data in month one.</span>
       </div>
     </div>
 
