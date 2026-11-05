@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Property Services · A Growth Partnership with Bob Wood</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#0d0d0d;
+  color:#ede6d8;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.7;
+}
+a{color:inherit;text-decoration:none}
+
+:root{
+  --gold:#c9a227;
+  --gold-lt:#e6c84a;
+  --gold-dim:rgba(201,162,39,0.10);
+  --gold-border:rgba(201,162,39,0.22);
+  --bg:#0d0d0d;
+  --bg-mid:#151515;
+  --bg-card:#1c1c1c;
+  --ink:#ede6d8;
+  --muted:#8a8070;
+  --faint:#2e2a24;
+  --max:1100px;
+  --r:10px;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:60px;
+  background:rgba(13,13,13,0.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+}
+nav.scrolled{border-color:var(--gold-border)}
+.nav-brand{font-weight:800;font-size:0.88rem;letter-spacing:0.06em;color:var(--gold)}
+.nav-links{display:flex;gap:1.75rem;font-size:0.82rem;color:var(--muted)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:var(--gold)}
+
+/* HERO */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:7rem 2rem 5rem;
+  background:radial-gradient(ellipse at 50% 55%,rgba(201,162,39,0.07) 0%,transparent 68%);
+}
+.hero-eyebrow{
+  font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:1.75rem;border:1px solid var(--gold-border);
+  display:inline-block;padding:0.35em 1.1em;border-radius:20px;
+}
+#hero h1{
+  font-size:clamp(3rem,7.5vw,5.5rem);font-weight:900;
+  line-height:1.08;letter-spacing:-0.025em;max-width:720px;margin-bottom:1.5rem;
+}
+.gold-word{color:var(--gold)}
+#hero .lead{
+  font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:620px;
+  margin-bottom:3rem;line-height:1.8;
+}
+#hero .lead strong{color:var(--ink)}
+.hero-stats{
+  display:flex;align-items:center;gap:1rem;margin-bottom:3.5rem;flex-wrap:wrap;justify-content:center;
+}
+.stat-block{
+  text-align:center;padding:1rem 1.6rem;
+  background:var(--bg-card);border:1px solid var(--gold-border);border-radius:var(--r);
+}
+.stat-num{display:block;font-size:2.1rem;font-weight:900;color:var(--gold);line-height:1}
+.stat-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.09em;margin-top:0.3rem}
+.stat-sep{color:var(--gold-border);font-size:1.6rem;user-select:none}
+.btn-gold{
+  background:var(--gold);color:#140f00;font-weight:800;
+  padding:0.85rem 2.2rem;border-radius:7px;border:none;cursor:pointer;
+  font-size:1rem;display:inline-block;transition:background .18s,transform .15s;letter-spacing:0.01em;
+}
+.btn-gold:hover{background:var(--gold-lt);transform:translateY(-2px)}
+.btn-outline{
+  border:1px solid var(--gold-border);color:var(--ink);
+  padding:0.8rem 1.9rem;border-radius:7px;font-size:0.95rem;
+  display:inline-block;transition:border-color .2s,color .2s;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* SECTIONS */
+section{padding:6rem 2rem}
+.container{max-width:var(--max);margin:0 auto}
+.section-label{
+  font-size:0.7rem;letter-spacing:0.17em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;display:block;
+}
+h2{
+  font-size:clamp(1.9rem,4vw,3rem);font-weight:900;
+  line-height:1.15;margin-bottom:1.25rem;letter-spacing:-0.025em;
+}
+.section-lead{font-size:1.05rem;color:var(--muted);max-width:700px;line-height:1.8;margin-bottom:3rem}
+.bg-mid{background:var(--bg-mid)}
+.divider{height:1px;background:linear-gradient(to right,transparent,var(--gold-border),transparent)}
+
+/* GRIDS */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+
+/* CARDS */
+.card{
+  background:var(--bg-card);border:1px solid var(--faint);border-radius:var(--r);
+  padding:2rem;transition:border-color .2s,transform .2s;
+}
+.card:hover{border-color:var(--gold-border);transform:translateY(-2px)}
+.card-icon{font-size:1.4rem;margin-bottom:1rem;display:block}
+.card h3{font-size:1.05rem;font-weight:800;margin-bottom:0.6rem}
+.card p{font-size:0.88rem;color:var(--muted);line-height:1.7}
+
+/* PILLAR CARDS */
+.pillar-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  color:var(--gold);font-weight:900;font-size:0.82rem;margin-bottom:1.25rem;
+}
+.pillar-title{font-size:1.25rem;font-weight:900;margin-bottom:0.3rem}
+.pillar-sub{color:var(--gold);font-size:0.75rem;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:1rem}
+.pillar-body{font-size:0.88rem;color:var(--muted);line-height:1.72}
+.pillar-features{margin-top:1.25rem;list-style:none}
+.pillar-features li{
+  font-size:0.83rem;color:var(--muted);padding:0.32rem 0;
+  border-bottom:1px solid var(--faint);display:flex;gap:0.5rem;align-items:flex-start;
+}
+.pillar-features li::before{content:"→";color:var(--gold);flex-shrink:0;margin-top:0.05rem}
+
+/* PLATFORM MOCKUP */
+.platform-frame{
+  background:#111;border:1px solid var(--gold-border);border-radius:12px;
+  overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.6);max-width:820px;margin:0 auto;
+}
+.platform-bar{
+  background:#181818;border-bottom:1px solid #242424;
+  padding:0.8rem 1rem;display:flex;align-items:center;gap:0.5rem;
+}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.platform-url{margin-left:0.75rem;font-size:0.78rem;color:var(--muted)}
+.platform-tabs{display:flex;border-bottom:1px solid #242424;background:#151515}
+.pt{
+  padding:0.7rem 1.3rem;font-size:0.8rem;color:var(--muted);cursor:pointer;
+  border-bottom:2px solid transparent;transition:color .18s,border-color .18s;user-select:none;
+}
+.pt.active{color:var(--gold);border-color:var(--gold)}
+.platform-content{padding:1.5rem;min-height:320px;font-size:0.85rem}
+.pane{display:none}.pane.active{display:block}
+
+/* Capture pane */
+.cap-btns{display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.cap-btn{
+  flex:1;min-width:140px;padding:0.7rem 1rem;text-align:center;
+  border:1px solid var(--gold-border);border-radius:6px;font-size:0.8rem;
+  font-weight:700;cursor:pointer;color:var(--ink);background:var(--bg-card);
+  transition:background .15s,color .15s,border-color .15s;
+}
+.cap-btn.sel{background:var(--gold);color:#140f00;border-color:var(--gold)}
+.cap-actions{display:flex;gap:0.75rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.cap-ptb{
+  padding:0.5rem 1rem;border:1px solid #353028;border-radius:6px;
+  font-size:0.8rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:0.4rem;
+}
+.cap-send{
+  padding:0.5rem 1.1rem;background:var(--gold);color:#140f00;
+  border:none;border-radius:6px;font-size:0.8rem;font-weight:800;cursor:pointer;
+}
+.cap-label{font-size:0.73rem;color:var(--muted);margin-bottom:0.4rem;display:block;text-transform:uppercase;letter-spacing:0.08em}
+.cap-textarea{
+  width:100%;background:#0a0a0a;border:1px solid #282828;border-radius:6px;
+  padding:0.8rem;color:var(--ink);font-size:0.82rem;line-height:1.65;
+  font-family:inherit;min-height:110px;resize:none;
+}
+
+/* Strategy log pane */
+.log-entry{background:#0a0a0a;border:1px solid #262626;border-radius:8px;padding:1.1rem}
+.log-date{font-size:0.7rem;color:var(--gold);margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:0.09em;font-weight:700}
+.log-summary{font-size:0.84rem;color:var(--ink);margin-bottom:0.9rem;line-height:1.65}
+.log-block{margin-bottom:0.75rem}
+.log-block-title{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:0.35rem;font-weight:700}
+.log-item{font-size:0.8rem;color:var(--ink);padding:0.22rem 0;display:flex;gap:0.5rem;align-items:flex-start}
+.log-item.dec::before{content:"✓";color:#6abf6a;flex-shrink:0}
+.log-item.act::before{content:"◎";color:var(--gold);flex-shrink:0}
+.log-item.q::before{content:"?";color:var(--muted);flex-shrink:0}
+.log-tags{margin-top:0.9rem;display:flex;gap:0.4rem;flex-wrap:wrap}
+.log-tag{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:0.7rem;padding:0.15em 0.65em;border-radius:20px}
+
+/* Scorecard pane */
+.sc-week{font-size:0.72rem;color:var(--muted);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.09em;font-weight:700}
+.sc-row{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0;border-bottom:1px solid #1e1e1e}
+.sc-metric{font-size:0.84rem;color:var(--muted)}
+.sc-right{display:flex;align-items:center;gap:0.5rem}
+.sc-val{font-size:0.9rem;font-weight:800;color:var(--ink)}
+.sc-delta{font-size:0.72rem;padding:0.1em 0.5em;border-radius:4px}
+.up{background:rgba(90,170,90,0.14);color:#7acf7a}
+.dn{background:rgba(170,90,90,0.14);color:#cf7a7a}
+.sc-target{font-size:0.72rem;color:var(--faint);min-width:90px;text-align:right}
+
+/* EOS */
+.eos-card{
+  background:var(--bg-card);border:1px solid var(--faint);border-radius:var(--r);
+  padding:1.6rem;position:relative;overflow:hidden;transition:border-color .2s;
+}
+.eos-card:hover{border-color:var(--gold-border)}
+.eos-card::after{
+  content:attr(data-num);position:absolute;top:-0.75rem;right:0.75rem;
+  font-size:5.5rem;font-weight:900;color:rgba(201,162,39,0.045);line-height:1;
+  pointer-events:none;
+}
+.eos-title{font-size:1rem;font-weight:900;color:var(--gold);margin-bottom:0.3rem}
+.eos-body{font-size:0.82rem;color:var(--muted);line-height:1.65;margin-bottom:0.8rem}
+.eos-list{list-style:none}
+.eos-list li{font-size:0.8rem;color:var(--muted);padding:0.22rem 0;display:flex;gap:0.5rem}
+.eos-list li::before{content:"·";color:var(--gold);font-size:1.3rem;line-height:1;flex-shrink:0}
+
+/* AI WINS */
+.win-item{
+  display:flex;gap:1.5rem;align-items:flex-start;
+  padding:1.5rem;background:var(--bg-card);border:1px solid var(--faint);
+  border-radius:var(--r);margin-bottom:1rem;transition:border-color .2s;
+}
+.win-item:hover{border-color:var(--gold-border)}
+.win-num{
+  flex-shrink:0;width:38px;height:38px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  color:var(--gold);font-weight:900;display:flex;align-items:center;justify-content:center;font-size:0.85rem;
+}
+.win-body h4{font-size:0.95rem;font-weight:800;margin-bottom:0.3rem}
+.win-body p{font-size:0.86rem;color:var(--muted);line-height:1.68;margin-bottom:0.5rem}
+.win-impact{
+  font-size:0.8rem;color:var(--gold);font-weight:700;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  display:inline-block;padding:0.2em 0.75em;border-radius:4px;
+}
+
+/* MATH */
+.math-wrap{background:var(--bg-card);border:1px solid var(--faint);border-radius:var(--r);overflow:hidden;margin-bottom:2.5rem}
+.math-table{width:100%;border-collapse:collapse;font-size:0.88rem}
+.math-table th{
+  text-align:left;padding:0.65rem 1rem;font-size:0.7rem;
+  text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);
+  border-bottom:1px solid var(--faint);background:#161616;
+}
+.math-table td{padding:0.8rem 1rem;border-bottom:1px solid var(--faint)}
+.math-table tr:last-child td{border-bottom:none}
+.math-table .total td{background:var(--gold-dim);color:var(--gold);font-weight:800}
+.num{text-align:right;font-weight:700}
+.roi-row{display:flex;gap:1.25rem;flex-wrap:wrap;margin-top:0.5rem}
+.roi-card{
+  flex:1;min-width:180px;background:var(--gold-dim);border:1px solid var(--gold-border);
+  border-radius:var(--r);padding:1.5rem;text-align:center;
+}
+.roi-num{font-size:2.6rem;font-weight:900;color:var(--gold);line-height:1}
+.roi-label{font-size:0.78rem;color:var(--muted);margin-top:0.4rem;line-height:1.5}
+
+/* INVESTMENT */
+.invest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:720px;margin:0 auto}
+.invest-card{
+  background:var(--bg-card);border:1px solid var(--faint);border-radius:var(--r);
+  padding:2rem;position:relative;
+}
+.invest-card.featured{border-color:var(--gold);background:linear-gradient(145deg,var(--bg-card),rgba(201,162,39,0.04))}
+.invest-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:#140f00;font-size:0.7rem;font-weight:900;
+  padding:0.2em 1em;border-radius:20px;letter-spacing:0.09em;text-transform:uppercase;white-space:nowrap;
+}
+.invest-phase{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.11em;color:var(--gold);margin-bottom:0.5rem}
+.invest-price{font-size:2.6rem;font-weight:900;color:var(--ink);line-height:1;margin:0.5rem 0}
+.invest-per{font-size:0.82rem;color:var(--muted);margin-bottom:1.4rem}
+.invest-list{list-style:none;margin-bottom:1.5rem}
+.invest-list li{
+  font-size:0.84rem;color:var(--muted);padding:0.38rem 0;
+  display:flex;gap:0.6rem;align-items:flex-start;border-bottom:1px solid var(--faint);
+}
+.invest-list li::before{content:"✓";color:var(--gold);flex-shrink:0;font-weight:900}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2.25rem;max-width:620px}
+.timeline::before{
+  content:"";position:absolute;left:0;top:6px;bottom:0;
+  width:2px;background:linear-gradient(to bottom,var(--gold) 0%,rgba(201,162,39,0.1) 100%);
+}
+.tl-item{position:relative;margin-bottom:2.5rem}
+.tl-item::before{
+  content:"";position:absolute;left:-2.75rem;top:6px;
+  width:13px;height:13px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);
+}
+.tl-week{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.11em;color:var(--gold);margin-bottom:0.3rem;font-weight:700}
+.tl-title{font-size:0.98rem;font-weight:800;margin-bottom:0.3rem}
+.tl-body{font-size:0.86rem;color:var(--muted);line-height:1.68}
+
+/* ABOUT BOB */
+.bio-wrap{display:flex;gap:3.5rem;align-items:flex-start;flex-wrap:wrap}
+.bio-text{flex:1;min-width:280px}
+.bio-text p{font-size:0.95rem;line-height:1.8;margin-bottom:1.25rem}
+.bio-text p+p{color:var(--muted)}
+.creds{flex-shrink:0;min-width:250px}
+.cred-item{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--faint)}
+.cred-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.cred-icon{
+  flex-shrink:0;width:38px;height:38px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  display:flex;align-items:center;justify-content:center;font-size:0.95rem;
+}
+.cred-label{font-size:0.86rem;font-weight:800;line-height:1.3;margin-bottom:0.2rem}
+.cred-desc{font-size:0.78rem;color:var(--muted);line-height:1.55}
+
+/* CTA */
+#cta{
+  text-align:center;padding:9rem 2rem;
+  background:radial-gradient(ellipse at center,rgba(201,162,39,0.09) 0%,transparent 68%);
+}
+#cta h2{font-size:clamp(2.2rem,5.5vw,4rem);margin-bottom:1.25rem}
+#cta .cta-lead{font-size:1.1rem;color:var(--muted);max-width:560px;margin:0 auto 2.75rem;line-height:1.8}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{padding:2rem;text-align:center;border-top:1px solid var(--faint);font-size:0.78rem;color:var(--faint)}
+
+/* QUOTE BLOCK */
+.quote-block{
+  max-width:600px;margin:3rem auto 0;text-align:center;
+  padding:2rem 2.5rem;background:var(--gold-dim);
+  border:1px solid var(--gold-border);border-radius:var(--r);
+}
+.quote-block p{font-size:1.05rem;color:var(--ink);line-height:1.75;font-style:italic}
+.quote-block cite{display:block;font-size:0.82rem;color:var(--gold);margin-top:1rem;font-weight:800;font-style:normal}
+
+/* RESPONSIVE */
+@media(max-width:680px){
+  .nav-links{display:none}
+  .hero-stats{gap:0.5rem}
+  .stat-block{padding:0.75rem 1.1rem}
+  .stat-num{font-size:1.6rem}
+  .platform-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .bio-wrap{flex-direction:column}
+  .roi-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="nav">
+  <div class="nav-brand">TPS · Bob Wood</div>
+  <div class="nav-links">
+    <a href="#pillars">The Offer</a>
+    <a href="#platform">Platform</a>
+    <a href="#eos">EOS</a>
+    <a href="#math">The Math</a>
+    <a href="#investment">Investment</a>
+    <a href="#cta">Start Here</a>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <span class="hero-eyebrow">Prepared for Doug Horner · Total Property Services</span>
+  <h1>Your Window Is <span class="gold-word">Open.</span></h1>
+  <p class="lead">
+    SBA 8(a) certification. A three-service model nobody else bundles at scale.
+    Zero marketing investment to date — which means the upside is entirely in front of you.
+    Getting from $4M to $30M isn't a sales problem.
+    <strong>It's a systems problem.</strong>
+  </p>
+  <div class="hero-stats">
+    <div class="stat-block">
+      <span class="stat-num">$4M</span>
+      <span class="stat-label">Today</span>
+    </div>
+    <span class="stat-sep">→</span>
+    <div class="stat-block">
+      <span class="stat-num">$30M</span>
+      <span class="stat-label">Year 8</span>
+    </div>
+    <span class="stat-sep">/</span>
+    <div class="stat-block">
+      <span class="stat-num">7.5×</span>
+      <span class="stat-label">Growth</span>
+    </div>
+    <span class="stat-sep">/</span>
+    <div class="stat-block">
+      <span class="stat-num">9yr</span>
+      <span class="stat-label">8(a) Window</span>
+    </div>
+  </div>
+  <a href="#pillars" class="btn-gold">See the Plan ↓</a>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ THE WINDOW ═══════════════ -->
+<section id="window" class="bg-mid">
+  <div class="container">
+    <span class="section-label">The Opportunity</span>
+    <h2>What Makes This Moment Different</h2>
+    <p class="section-lead">Most $4M service businesses are good at what they do but invisible to the clients who'd pay the most. TPS isn't that. You have certification advantages that took years to earn, service lines that lock out competitors on bundled bids, and a federal market that hasn't fully discovered you yet.</p>
+    <div class="grid-3">
+      <div class="card">
+        <span class="card-icon">🛡</span>
+        <h3>SBA 8(a) Certification</h3>
+        <p>Protected federal market access. Sole-source contracts. Set-aside bidding. This is a competitive moat most competitors can't legally cross. The 9-year program window is active right now. Using it fully isn't optional — it's the growth plan.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">⚡</span>
+        <h3>Three-Service Bundle</h3>
+        <p>Landscape + Parking + Winter Service in one contract. For facilities managers who hate managing three vendors, you're the only call they need to make. That bundled value hasn't been sold at scale — yet. That's not a problem. That's the opportunity.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📊</span>
+        <h3>60% Win Rate — With Room</h3>
+        <p>A 2-hour estimate turnaround is currently the ceiling. Speed moves the win rate — fast. At scale, a 7-point improvement on your bid volume adds over $280K in net revenue. That's year-one math, not a 5-year projection.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ THREE PILLARS ═══════════════ -->
+<section id="pillars">
+  <div class="container">
+    <span class="section-label">What Bob Brings</span>
+    <h2>Three Things Nobody Else Brings Together</h2>
+    <p class="section-lead">Most consultants bring advice. EOS implementers bring a framework. AI consultants bring technology. This engagement brings all three — plus a production-deployed platform already running in a live business today.</p>
+    <div class="grid-3">
+
+      <div class="card">
+        <div class="pillar-num">1</div>
+        <div class="pillar-title">Strategic Architecture</div>
+        <div class="pillar-sub">EOS Framework</div>
+        <p class="pillar-body">The Entrepreneurial Operating System gives every person in your company a clear role, clear priorities, and a clear way to surface problems before they become crises. It's not advice — it's an operating system built specifically for founder-led businesses that are ready to scale.</p>
+        <ul class="pillar-features">
+          <li>Vision/Traction Organizer (V/TO)</li>
+          <li>90-day Rocks with assigned owners</li>
+          <li>Weekly Level 10 meetings (L10)</li>
+          <li>Scorecard: 10 numbers, one decision</li>
+          <li>IDS: Issues resolved, not recycled</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="pillar-num">2</div>
+        <div class="pillar-title">Intelligence Platform</div>
+        <div class="pillar-sub">AI-Powered Infrastructure</div>
+        <p class="pillar-body">Not a subscription to a tool. A deployed platform, built from the ground up, running today for a Dallas-based financial advisory firm. Captures every client conversation, every team meeting, every strategic decision — and surfaces them through an AI assistant that knows the whole business.</p>
+        <ul class="pillar-features">
+          <li>Voice-first capture (Push to Talk)</li>
+          <li>AI-distilled meeting notes + decisions</li>
+          <li>Speaker identification (who said what)</li>
+          <li>AI-generated weekly intelligence briefs</li>
+          <li>Brain: ask anything about your business</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="pillar-num">3</div>
+        <div class="pillar-title">People Science</div>
+        <div class="pillar-sub">Instinctive Drives + Formal Axiology</div>
+        <p class="pillar-body">Most growth plans fail in the hiring stage. The wrong person in a key role breaks the system before it can prove itself. Instinctive Drives and Formal Axiology are formal assessment tools — not personality tests — that predict how a person performs under pressure and whether they're wired for the role you're hiring them into.</p>
+        <ul class="pillar-features">
+          <li>Instinctive Drives profiles for key hires</li>
+          <li>Formal Axiology decision-making assessment</li>
+          <li>Role-specific performance prediction</li>
+          <li>Leadership team alignment mapping</li>
+          <li>Succession and promotion readiness</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ PLATFORM MOCKUP ═══════════════ -->
+<section id="platform" class="bg-mid">
+  <div class="container">
+    <span class="section-label">The Intelligence Platform</span>
+    <h2>Not a Concept. A Working System.</h2>
+    <p class="section-lead">The platform below is running right now for a Dallas-based financial advisory firm. What took 18 months to architect and deploy for them, your team gets from day one. Click the tabs to explore what it looks like in practice — with TPS data.</p>
+
+    <div class="platform-frame">
+      <div class="platform-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="platform-url">tps-intelligence.app · Capture Hub</span>
+      </div>
+      <div class="platform-tabs">
+        <div class="pt active" data-tab="capture">Capture Hub</div>
+        <div class="pt" data-tab="log">Strategy Log</div>
+        <div class="pt" data-tab="brief">Weekly Brief</div>
+      </div>
+      <div class="platform-content">
+
+        <!-- CAPTURE -->
+        <div class="pane active" id="pane-capture">
+          <div class="cap-btns">
+            <div class="cap-btn sel">Client / Contact / Portfolio</div>
+            <div class="cap-btn">Team / Individual</div>
+          </div>
+          <div class="cap-actions">
+            <div class="cap-ptb">🎙 Push to Talk</div>
+            <button class="cap-send">Send to Capture Brain</button>
+          </div>
+          <span class="cap-label">Transcript / Notes</span>
+          <textarea class="cap-textarea" readonly>Met with Sandra Cho at Bellevue city hall today. She confirmed the municipal campus contract — 14 buildings, year-round bundled service — goes to rebid in January. She needs a quote that covers landscape, lot maintenance, and winter. She mentioned the incumbent is slow on turnarounds and has had two complaints this season. This is ours if we can get her a clean bundled quote within 36 hours of the RFP drop. Carlos should own the estimate. Follow up with Sandra by Nov 14.</textarea>
+        </div>
+
+        <!-- STRATEGY LOG -->
+        <div class="pane" id="pane-log">
+          <div class="log-entry">
+            <div class="log-date">Nov 5, 2026 · Team Meeting — Q4 Federal Bid Strategy</div>
+            <div class="log-summary">Reviewed Q4 federal pipeline. Bellevue municipal campus identified as top priority. Agreed to restructure estimating workflow to target sub-36-hour turnaround on all federal bids. Carlos assigned as federal estimating lead through December.</div>
+            <div class="log-block">
+              <div class="log-block-title">Decisions</div>
+              <div class="log-item dec">Bellevue municipal designated as Q4 Rock #1 — Doug owns</div>
+              <div class="log-item dec">Carlos moves to federal estimating full-time through Dec 31</div>
+              <div class="log-item dec">36-hr turnaround added to Scorecard starting next week</div>
+            </div>
+            <div class="log-block">
+              <div class="log-block-title">Action Items</div>
+              <div class="log-item act">Doug: Review Bellevue RFP specs by Nov 14</div>
+              <div class="log-item act">Maria: Set up SAM.gov + WA portal alerts for contracts under $500K</div>
+              <div class="log-item act">Carlos: Draft updated estimating SOP with new workflow by Nov 18</div>
+            </div>
+            <div class="log-block">
+              <div class="log-block-title">Open Questions</div>
+              <div class="log-item q">Can we handle two simultaneous federal bids before winter ramp-up hits?</div>
+            </div>
+            <div class="log-tags">
+              <span class="log-tag">Doug</span>
+              <span class="log-tag">Maria</span>
+              <span class="log-tag">Carlos</span>
+              <span class="log-tag">federal-bids</span>
+              <span class="log-tag">estimating</span>
+              <span class="log-tag">Bellevue</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEKLY BRIEF -->
+        <div class="pane" id="pane-brief">
+          <div class="sc-week">Week of Nov 3–7, 2026 · Total Property Services Scorecard</div>
+          <div class="sc-row">
+            <span class="sc-metric">Estimate Turnaround (avg)</span>
+            <div class="sc-right"><span class="sc-val">31 hrs</span><span class="sc-delta up">↓ from 48</span></div>
+            <span class="sc-target">Target: &lt;36 hrs</span>
+          </div>
+          <div class="sc-row">
+            <span class="sc-metric">Quote Win Rate</span>
+            <div class="sc-right"><span class="sc-val">63%</span><span class="sc-delta up">↑ from 60%</span></div>
+            <span class="sc-target">Target: 67%</span>
+          </div>
+          <div class="sc-row">
+            <span class="sc-metric">Active Federal Bids</span>
+            <div class="sc-right"><span class="sc-val">3</span><span class="sc-delta up">+1</span></div>
+            <span class="sc-target">Target: 4</span>
+          </div>
+          <div class="sc-row">
+            <span class="sc-metric">Route Efficiency</span>
+            <div class="sc-right"><span class="sc-val">88%</span><span class="sc-delta up">↑ from 82%</span></div>
+            <span class="sc-target">Target: 90%</span>
+          </div>
+          <div class="sc-row">
+            <span class="sc-metric">AR Aging &gt;60 Days</span>
+            <div class="sc-right"><span class="sc-val">3.2%</span><span class="sc-delta up">↓ from 4.1%</span></div>
+            <span class="sc-target">Target: &lt;3%</span>
+          </div>
+          <div class="sc-row">
+            <span class="sc-metric">Estimates Submitted (week)</span>
+            <div class="sc-right"><span class="sc-val">14</span><span class="sc-delta up">+2</span></div>
+            <span class="sc-target">Target: 15</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:0.78rem;margin-top:1.25rem">Interactive mockup showing how TPS data would appear. The underlying system is production-deployed and running today for a live client.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ EOS ═══════════════ -->
+<section id="eos">
+  <div class="container">
+    <span class="section-label">The Operating System</span>
+    <h2>EOS: Built for Businesses Ready to Scale</h2>
+    <p class="section-lead">The Entrepreneurial Operating System gives every person in the organization a clear lens on what matters this quarter, what's broken, and what they own. Here's how each of the six components maps specifically to TPS.</p>
+    <div class="grid-3">
+      <div class="eos-card" data-num="1">
+        <div class="eos-title">Vision</div>
+        <p class="eos-body">Lock TPS's core values, 10-year revenue target, three-year picture, and one-year plan. Everyone navigates from the same map — no more priority conflicts between what you're chasing this week and what matters this year.</p>
+        <ul class="eos-list">
+          <li>VTO session: core values + market focus</li>
+          <li>10-year target: $30M locked</li>
+          <li>3-year picture: new markets, new services</li>
+          <li>1-year plan: $5.5M revenue, 3 federal wins</li>
+        </ul>
+      </div>
+      <div class="eos-card" data-num="2">
+        <div class="eos-title">People</div>
+        <p class="eos-body">Right people, right seats — before you need them. The growth from 30 to 260 employees is a people problem more than a revenue problem. Solve it with predictive science, not gut feel.</p>
+        <ul class="eos-list">
+          <li>Instinctive Drives + Axiology for key roles</li>
+          <li>Accountability Chart (not an org chart)</li>
+          <li>Continuity Files: every key person documented</li>
+          <li>Hiring predictability before headcount doubles</li>
+        </ul>
+      </div>
+      <div class="eos-card" data-num="3">
+        <div class="eos-title">Data</div>
+        <p class="eos-body">Weekly Scorecard with 10 numbers that tell you at a glance if the business is on track — no narrative needed. If the numbers are green, good. If red, it goes on the Issues List. That's the whole meeting.</p>
+        <ul class="eos-list">
+          <li>Estimate turnaround + win rate</li>
+          <li>Route efficiency + AR aging</li>
+          <li>Federal bid pipeline + active contracts</li>
+          <li>AI-generated brief delivered every Monday</li>
+        </ul>
+      </div>
+      <div class="eos-card" data-num="4">
+        <div class="eos-title">Issues</div>
+        <p class="eos-body">Level 10 meetings every week. Issues List. IDS discipline: Identify, Discuss, Solve. No issue lives more than two weeks on the list. The ones that do are organizational problems, not operational ones.</p>
+        <ul class="eos-list">
+          <li>Weekly L10 — 90-minute structured agenda</li>
+          <li>Issues List visible to leadership team</li>
+          <li>IDS: every issue resolved or escalated</li>
+          <li>AI-captured: decisions logged automatically</li>
+        </ul>
+      </div>
+      <div class="eos-card" data-num="5">
+        <div class="eos-title">Process</div>
+        <p class="eos-body">Document the core processes that drive revenue. Estimating. Routing. Federal bidding. Onboarding. Handed off to the next person who needs them. The business shouldn't depend on who remembers how to do it.</p>
+        <ul class="eos-list">
+          <li>Estimating SOP: 48 hrs → 24 hrs target</li>
+          <li>Federal bid SOP: SAM.gov to submission</li>
+          <li>Routing SOP: 300+ properties optimized</li>
+          <li>Onboarding SOP: scalable to 260 employees</li>
+        </ul>
+      </div>
+      <div class="eos-card" data-num="6">
+        <div class="eos-title">Traction</div>
+        <p class="eos-body">Three Rocks per quarter. Assigned owners. Reviewed every week. No Rock lives in the maybe zone. This is how $4M becomes $30M — 90 days at a time, without losing the thread between quarters.</p>
+        <ul class="eos-list">
+          <li>Q4 Rock #1: Win Bellevue municipal bid</li>
+          <li>Q4 Rock #2: Estimating SOP live + running</li>
+          <li>Q4 Rock #3: Scorecard 8+ consecutive weeks</li>
+          <li>Quarterly review: score, reset, go again</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ AI QUICK WINS ═══════════════ -->
+<section id="ai" class="bg-mid">
+  <div class="container">
+    <span class="section-label">AI Quick Wins</span>
+    <h2>What AI Changes for TPS — Specifically</h2>
+    <p class="section-lead">These aren't hypothetical future applications. Each one is deployable within the first 90 days, and each has a measurable impact on the numbers that matter to a service business at this stage.</p>
+
+    <div class="win-item">
+      <div class="win-num">1</div>
+      <div class="win-body">
+        <h4>AI-Assisted Estimating</h4>
+        <p>Your estimators spend two hours per estimate pulling site data, calculating materials, and formatting proposals. With AI assistance, that drops to 20 minutes. That's not an improvement in speed — it's the difference between 5 estimates a day and 25. More estimates, faster turnaround, higher win rate from responsiveness alone.</p>
+        <span class="win-impact">Estimated impact: 7-point win rate improvement = +$280K annual revenue at current bid volume</span>
+      </div>
+    </div>
+
+    <div class="win-item">
+      <div class="win-num">2</div>
+      <div class="win-body">
+        <h4>Route Optimization for 300+ Properties</h4>
+        <p>Static routes built by habit are costing you fuel, labor, and equipment hours every single day. AI-optimized routing for 300+ properties, adjusted seasonally for winter vs. standard service, reduces drive time by an estimated 10–15%. At your crew count and regional fuel costs, that's real margin recovered without adding a dollar of revenue.</p>
+        <span class="win-impact">Estimated impact: 10% efficiency improvement = $60–80K in annual cost savings</span>
+      </div>
+    </div>
+
+    <div class="win-item">
+      <div class="win-num">3</div>
+      <div class="win-body">
+        <h4>Federal Bid Monitoring — SAM.gov + WA Portals</h4>
+        <p>Right now, federal bid opportunities sit in portals you check when you remember to. AI-monitored feeds for SAM.gov and Washington state procurement portals mean you never miss a contract that fits your certifications. First notice, every time, automatically — with an alert when something in your wheelhouse drops.</p>
+        <span class="win-impact">Estimated impact: 2 additional federal contracts per year at avg $200K, 63% margin = +$252K net profit</span>
+      </div>
+    </div>
+
+    <div class="win-item">
+      <div class="win-num">4</div>
+      <div class="win-body">
+        <h4>Aspire CRM Automation</h4>
+        <p>Follow-up emails, proposal reminders, renewal alerts, pipeline health checks — automated inside Aspire. The revenue that walks away because someone forgot to follow up on a $40K quote is the most expensive revenue you're not tracking. CRM discipline isn't a people problem when AI handles the cadence.</p>
+        <span class="win-impact">Estimated impact: 15–20% reduction in proposal ghosting; improved renewal retention rate</span>
+      </div>
+    </div>
+
+    <div class="win-item">
+      <div class="win-num">5</div>
+      <div class="win-body">
+        <h4>AI-Enhanced Federal Proposals</h4>
+        <p>Federal proposals have requirements commercial bids don't. Compliance language, pricing justification, evaluation criteria formatting — AI assistance reduces prep time and raises submission quality. On federal evaluations, quality scores matter. A 5-point improvement in your scoring average is worth more than it sounds at $500K+ contracts.</p>
+        <span class="win-impact">Impact: Higher evaluation scores, faster prep, more bids submitted per procurement cycle</span>
+      </div>
+    </div>
+
+    <div class="win-item">
+      <div class="win-num">6</div>
+      <div class="win-body">
+        <h4>Meeting Intelligence (The Platform)</h4>
+        <p>Every team meeting captured, speaker-identified, distilled into decisions, action items, and open questions. The strategy of one meeting stops bleeding into the chaos of the next. Institutional knowledge stops walking out the door when good people leave — because it's already in the system.</p>
+        <span class="win-impact">Impact: Faster decisions, cleaner accountability, zero lost context — measurable within 60 days</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ THE MATH ═══════════════ -->
+<section id="math">
+  <div class="container">
+    <span class="section-label">The Math</span>
+    <h2>Return on Investment — Year One</h2>
+    <p class="section-lead">The question isn't whether $10,000 a month is a lot. The question is whether the value is a multiple of that. Here's the conservative year-one case — built on specific, measurable levers in the TPS business model.</p>
+
+    <div class="math-wrap">
+      <table class="math-table">
+        <thead>
+          <tr>
+            <th>Value Driver</th>
+            <th>Mechanism</th>
+            <th class="num">Estimated Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Faster Estimating</td>
+            <td>7% win rate improvement on current bid volume</td>
+            <td class="num">+$280K revenue</td>
+          </tr>
+          <tr>
+            <td>Federal Bid Wins</td>
+            <td>2 additional contracts at avg $200K, 63% margin</td>
+            <td class="num">+$252K net profit</td>
+          </tr>
+          <tr>
+            <td>Route Optimization</td>
+            <td>10% efficiency on 300+ property routing</td>
+            <td class="num">+$70K cost savings</td>
+          </tr>
+          <tr>
+            <td>CRM Follow-up</td>
+            <td>15% reduction in proposal ghosting</td>
+            <td class="num">+$60K recovered revenue</td>
+          </tr>
+          <tr>
+            <td>EOS Accountability</td>
+            <td>Reduced rework, cleaner ops, faster decisions</td>
+            <td class="num">+$50K efficiency</td>
+          </tr>
+          <tr class="total">
+            <td colspan="2"><strong>Conservative Year-One Lift</strong></td>
+            <td class="num"><strong>~$712K</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="roi-row">
+      <div class="roi-card">
+        <div class="roi-num">$105K</div>
+        <div class="roi-label">Year-One Advisory Investment<br><span style="font-size:0.72rem;opacity:0.7">(3 mo × $5K + 9 mo × $10K)</span></div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-num">$712K</div>
+        <div class="roi-label">Conservative Year-One<br>Revenue + Cost Impact</div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-num">6.8×</div>
+        <div class="roi-label">Conservative ROI<br>Year One</div>
+      </div>
+    </div>
+
+    <p style="color:var(--muted);font-size:0.82rem;margin-top:1.75rem;text-align:center;max-width:620px;margin-left:auto;margin-right:auto">
+      Conservative estimates based on industry benchmarks and specific gaps identified in the TPS business model. Actual results depend on execution speed, market conditions, and team commitment to the system.
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ INVESTMENT ═══════════════ -->
+<section id="investment" class="bg-mid">
+  <div class="container">
+    <span class="section-label">The Investment</span>
+    <h2>Structured to Prove Value First</h2>
+    <p class="section-lead">The first three months are a proof period — not a ramp-up. By month three, there should be clear, measurable evidence of the system working. If there isn't, the engagement ends. If there is, the conversation about month four is easy.</p>
+
+    <div class="invest-grid">
+      <div class="invest-card">
+        <div class="invest-phase">Months 1–3 · Proof Period</div>
+        <div class="invest-price">$5,000</div>
+        <div class="invest-per">per month · 3-month commitment</div>
+        <ul class="invest-list">
+          <li>Vision/Traction Organizer (V/TO) session</li>
+          <li>EOS full framework implementation begins</li>
+          <li>Intelligence Platform deployed for TPS</li>
+          <li>AI quick wins: estimating + route optimization</li>
+          <li>First Rocks set + Scorecard live</li>
+          <li>Instinctive Drives profiles for key leadership</li>
+          <li>Level 10 meeting cadence established</li>
+        </ul>
+        <p style="font-size:0.8rem;color:var(--muted)">If measurable results aren't evident by month 3, the engagement ends here. No long-term lock-in. No hard feelings.</p>
+      </div>
+
+      <div class="invest-card featured">
+        <div class="invest-badge">Month 4+</div>
+        <div class="invest-phase">Ongoing Partnership</div>
+        <div class="invest-price">$10,000</div>
+        <div class="invest-per">per month · continuing</div>
+        <ul class="invest-list">
+          <li>Monthly strategic deep-work sessions</li>
+          <li>Quarterly Rocks review + reset</li>
+          <li>Ongoing EOS facilitation + coaching</li>
+          <li>Platform evolution as the business grows</li>
+          <li>AI-generated weekly intelligence briefs</li>
+          <li>Federal bid strategy + automated monitoring</li>
+          <li>People assessments (up to 5/quarter)</li>
+          <li>Direct access — not a ticketing system</li>
+        </ul>
+        <p style="font-size:0.8rem;color:var(--muted)">Month-to-month after the proof period. The relationship continues because it's working — not because of a contract.</p>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p>"If the engagement doesn't generate a provable 4× return by the end of year one, it should stop. That's not a marketing line. It's the standard I hold myself to — and what makes the engagement worth taking seriously."</p>
+      <cite>— Bob Wood</cite>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ 90-DAY PLAN ═══════════════ -->
+<section id="plan">
+  <div class="container">
+    <span class="section-label">The Proof Period</span>
+    <h2>What Happens in the First 90 Days</h2>
+    <p class="section-lead">The proof period isn't a ramp-up. It's a sprint. By week 12, TPS should have a running Scorecard, an active EOS cadence, an operational intelligence platform, and measurable improvements in the numbers that matter.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-week">Weeks 1–2</div>
+        <div class="tl-title">Foundation: Vision + People</div>
+        <div class="tl-body">Vision/Traction Organizer session with Doug and leadership. Core values locked. 10-year target confirmed. Instinctive Drives and Axiology assessments for key team members. Accountability Chart drafted.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">Weeks 2–3</div>
+        <div class="tl-title">Platform Live + Estimating Workflow Rebuilt</div>
+        <div class="tl-body">Intelligence Platform deployed and team trained. Continuity File interviews begin — voice-captured, AI-distilled. New estimating workflow live with AI assistance. Scorecard metrics defined and baseline set.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">Weeks 3–6</div>
+        <div class="tl-title">Scorecard + Level 10 Cadence Running</div>
+        <div class="tl-body">Weekly Scorecard live. Level 10 meetings established with IDS discipline. Issues List active. First Rocks set with assigned owners. SAM.gov and WA portal monitoring automated.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">Weeks 4–8</div>
+        <div class="tl-title">Process Documentation</div>
+        <div class="tl-body">Estimating SOP documented and handed off. Federal bid SOP drafted. Route optimization implemented for 300+ properties. Sales process documented from first contact to signed contract.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">Weeks 8–12</div>
+        <div class="tl-title">First Full Quarter Review — The Proof</div>
+        <div class="tl-body">Rocks scored. Scorecard trended. ROI calculated: estimate turnaround, win rate, route efficiency, federal pipeline. Full presentation to Doug: here's what changed, here's what it's worth, here's what Q2 looks like.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ ABOUT BOB ═══════════════ -->
+<section id="bob" class="bg-mid">
+  <div class="container">
+    <span class="section-label">About Bob Wood</span>
+    <h2>Not a Consultant. A Builder.</h2>
+    <div class="bio-wrap">
+      <div class="bio-text">
+        <p>The difference between an advisor who tells you what to do and one who builds the system alongside you isn't just style. It's what you're left with when the engagement ends. Bob builds infrastructure — systems that work without him in the room.</p>
+        <p>The Intelligence Platform in this proposal isn't something Bob licensed or white-labeled. He architected it, deployed it, and runs it in production for an active client today. It has enterprise-grade security, an AI capture and distillation engine, voice identification with privacy counsel sign-off, and a live AI assistant that knows the full business. That's not a demo. That's a production system — and your team gets it from day one.</p>
+        <p>The EOS framework, the Instinctive Drives and Formal Axiology practice, the AI implementation experience — none of these exist in isolation in this engagement. They were designed to work together, deployed for the same kind of founder-led, service-oriented business that TPS is today and that $30M TPS will be in eight years.</p>
+        <p>This engagement came through relationship, not solicitation. That matters for the kind of work this is — and for the kind of advisor you want when the stakes are real.</p>
+      </div>
+      <div class="creds">
+        <div class="cred-item">
+          <div class="cred-icon">🏗</div>
+          <div>
+            <div class="cred-label">Built & Deployed AI Platform</div>
+            <div class="cred-desc">Production system running for a Dallas-based advisory firm. Not a proposal — a working, evolving product.</div>
+          </div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">⚙️</div>
+          <div>
+            <div class="cred-label">EOS Practitioner</div>
+            <div class="cred-desc">Implementing Entrepreneurial Operating System with leadership teams navigating the transition from founder-led to system-led growth.</div>
+          </div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">🧠</div>
+          <div>
+            <div class="cred-label">Instinctive Drives + Formal Axiology</div>
+            <div class="cred-desc">Formal assessment practitioner. Predictive tools for hiring, role alignment, and leadership development that go well beyond personality testing.</div>
+          </div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">🤝</div>
+          <div>
+            <div class="cred-label">Built on Relationship</div>
+            <div class="cred-desc">This engagement came through trusted personal connection — not cold outreach. That changes what this partnership can be from the first conversation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section id="cta">
+  <div class="container">
+    <span class="section-label">The Next Step</span>
+    <h2>One Conversation.</h2>
+    <p class="cta-lead">45 minutes. No slides. Just one question: what does $30M Total Property Services look like to you — and what's standing between you and it right now?<br><br>If the answer is a systems problem, we'll know by the end of the call. If it isn't, I'll tell you that too.</p>
+    <div class="cta-btns">
+      <a href="mailto:bob@robertwoodllc.com" class="btn-gold">Schedule a Call with Bob</a>
+      <a href="#pillars" class="btn-outline">Review the Plan ↑</a>
+    </div>
+    <p style="font-size:0.78rem;color:var(--faint);margin-top:2.5rem">bob@robertwoodllc.com &nbsp;·&nbsp; Prepared November 2026 &nbsp;·&nbsp; Confidential</p>
+  </div>
+</section>
+
+<footer>
+  <p>Total Property Services · Growth Partnership Proposal · Bob Wood · Robert Wood LLC · November 2026</p>
+</footer>
+
+<script>
+// Nav scroll highlight
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+// Platform tab switching
+document.querySelectorAll('.pt').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.pt').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const pane = document.getElementById('pane-' + tab.dataset.tab);
+    if (pane) pane.classList.add('active');
+  });
+});
+
+// Capture button toggle (demo only)
+document.querySelectorAll('.cap-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cap-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+  });
+});
+</script>
+
+</body>
+</html>
