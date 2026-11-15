@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClaudeClaw on a VPS · Install &amp; Rollout Plan (Internal)</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#0d0d0d;color:#ede6d8;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.7;
+}
+a{color:inherit;text-decoration:none}
+:root{
+  --gold:#c9a227;--gold-lt:#e6c84a;--gold-dim:rgba(201,162,39,0.10);--gold-border:rgba(201,162,39,0.22);
+  --bg-mid:#151515;--bg-card:#1c1c1c;--ink:#ede6d8;--muted:#8a8070;--faint:#2e2a24;
+  --red:#c95a4a;--red-dim:rgba(201,90,74,0.10);--red-border:rgba(201,90,74,0.3);
+  --blue:#4089c9;--blue-dim:rgba(64,137,201,0.10);--blue-border:rgba(64,137,201,0.24);
+  --max:980px;--r:10px;
+}
+.banner{
+  background:var(--red-dim);border-bottom:1px solid var(--red-border);
+  text-align:center;padding:0.6rem 1rem;font-size:0.82rem;color:#e0a89c;
+}
+.banner strong{color:#f0c4ba}
+header.hero{padding:5rem 2rem 3rem;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(201,162,39,0.07) 0%,transparent 68%);}
+.eyebrow{font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;border:1px solid var(--gold-border);display:inline-block;padding:0.3em 1em;border-radius:20px}
+header.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;line-height:1.15;letter-spacing:-0.02em;max-width:760px;margin:0 auto 1rem}
+.gold{color:var(--gold)}
+header.hero .lead{font-size:1rem;color:var(--muted);max-width:640px;margin:0 auto;line-height:1.8}
+section{padding:3.5rem 2rem}
+.container{max-width:var(--max);margin:0 auto}
+.section-label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;display:block}
+h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;line-height:1.25;margin-bottom:1rem;letter-spacing:-0.02em}
+h3{font-size:1.05rem;font-weight:800;margin-bottom:0.5rem}
+.section-lead{font-size:0.95rem;color:var(--muted);max-width:720px;line-height:1.8;margin-bottom:1.75rem}
+.bg-mid{background:var(--bg-mid)}
+.divider{height:1px;background:linear-gradient(to right,transparent,var(--gold-border),transparent)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}
+.card{background:var(--bg-card);border:1px solid var(--faint);border-radius:var(--r);padding:1.5rem;}
+.card p{font-size:0.86rem;color:var(--muted);line-height:1.7}
+.card ul{margin-top:0.6rem;padding-left:1.1rem;font-size:0.85rem;color:var(--muted);line-height:1.8}
+.callout{border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:0.86rem;line-height:1.8}
+.callout.gold{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--ink)}
+.callout.red{background:var(--red-dim);border:1px solid var(--red-border);color:#e8c3bb}
+.callout.blue{background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--ink)}
+.callout strong{color:var(--gold)}
+.callout.red strong{color:#e8877a}
+ol.steps{padding-left:1.4rem;font-size:0.9rem;line-height:2;color:var(--ink)}
+ol.steps li{margin-bottom:0.3rem}
+ol.steps b{color:var(--gold)}
+code{background:#111;border:1px solid var(--faint);border-radius:4px;padding:0.1em 0.4em;font-size:0.84em;color:#e6c84a}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:0.5rem}
+th,td{text-align:left;padding:0.6rem 0.75rem;border-bottom:1px solid var(--faint)}
+th{color:var(--gold);font-size:0.72rem;letter-spacing:0.07em;text-transform:uppercase}
+td{color:var(--muted)}
+.tag{display:inline-block;font-size:0.68rem;letter-spacing:0.05em;text-transform:uppercase;padding:0.2em 0.6em;border-radius:12px;margin-right:0.4rem}
+.tag.open{background:var(--red-dim);border:1px solid var(--red-border);color:#e0a89c}
+.tag.fact{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold)}
+footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint)}
+.back{display:inline-block;margin-top:1.5rem;font-size:0.85rem;color:var(--gold);border:1px solid var(--gold-border);padding:0.5rem 1.1rem;border-radius:7px}
+.back:hover{border-color:var(--gold-lt)}
+</style>
+</head>
+<body>
+
+<div class="banner"><strong>Internal working document.</strong> Not client-facing — this page is for Bob's own planning. No credentials, IPs, or account-specific details are included anywhere below; keep it that way if this gets edited.</div>
+
+<header class="hero">
+  <span class="eyebrow">ClaudeClaw · AI Integrator Workstream</span>
+  <h1>Installing ClaudeClaw on Doug's VPS — <span class="gold">What It Actually Takes</span></h1>
+  <p class="lead">A grounded install-and-rollout plan, pulled from ClaudeClaw's own README and service scripts — not from the Early AI-dopters Skool post, which turned out to be gated behind login (see note at bottom). Built to de-risk a first-time VPS deployment before it touches a real client box.</p>
+</header>
+
+<div class="divider"></div>
+
+<section id="why">
+  <div class="container">
+    <span class="section-label">Why This Needs Its Own Plan</span>
+    <h2>This Is Infrastructure, Not a Feature Build</h2>
+    <p class="section-lead">Every other TPS AI deliverable (estimating, routing, bid monitoring) runs <em>inside</em> ClaudeClaw. This one is the question of where ClaudeClaw itself lives. Doug has VPS access and the Intelligence Platform pillar of the proposal depends on something always-on and reachable — a laptop that sleeps or gets closed doesn't cut it for a company-wide system. A VPS does. But it's also the first time this gets deployed to infrastructure Bob doesn't personally own, running unattended, reachable from the internet. That changes the risk profile enough to plan it deliberately rather than improvise it live on Doug's box.</p>
+    <div class="callout red">
+      <strong>Open architecture question — resolve before building anything:</strong> Doug's laptop already runs a ClaudeClaw instance with Reagan (CEO agent) and Dominic (CFO agent), set up by Stephanie. Is the VPS instance (1) a <em>separate</em> company-wide system — e.g. the Intelligence Platform / meeting-capture agents, Scorecard dashboard, estimating automation, reachable by Tom and others, running alongside Reagan/Dominic on the laptop untouched — or (2) intended to <em>replace/absorb</em> the laptop install? These have very different setup paths (new instance vs. migration) and different access lists. Don't assume; confirm with Doug first.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="bg-mid" id="facts">
+  <div class="container">
+    <span class="section-label">What ClaudeClaw Actually Needs</span>
+    <h2>Grounded in the Repo, Not the Internet</h2>
+    <p class="section-lead">Pulled directly from <code>README.md</code>'s "Cloud deployment (advanced)" section and <code>scripts/agent-service.sh</code> — this is what's actually documented and shipped, not general VPS folklore.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Baseline requirements <span class="tag fact">from repo</span></h3>
+        <ul>
+          <li>Node.js 22 or 24 (LTS) + git</li>
+          <li>Claude Code authenticated — the hard part on a headless box, see below</li>
+          <li>512 MB RAM minimum, <b>1 GB+ recommended</b> (each query spawns a Claude Code subprocess)</li>
+          <li>Outbound access to <code>api.telegram.org</code> and the Anthropic API (plus any optional integrations enabled)</li>
+          <li>A writable persistent filesystem for <code>store/claudeclaw.db</code> (SQLite/SQLCipher)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>The good news about a real VPS <span class="tag fact">from repo</span></h3>
+        <p>The README's cloud-deployment warnings are mostly aimed at <em>ephemeral container platforms</em> (Railway, Fly, Render) that wipe the filesystem on every redeploy. A real VPS — a plain Ubuntu/Debian box with a persistent disk — doesn't have that problem by default. It behaves like "a Linux machine," so the <em>standard</em> Linux install path applies (<code>npm run setup</code> → systemd <code>--user</code> service), not the container workarounds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="auth">
+  <div class="container">
+    <span class="section-label">The One Real Blocker</span>
+    <h2>Headless Auth: Claude Code Can't Open a Browser</h2>
+    <p class="section-lead"><code>claude login</code> is the normal path and it wants an interactive browser OAuth flow. A VPS has no browser. This is the actual failure mode most people hit on a first VPS attempt — worth betting that's close to what went wrong with openclaw before, even though that's a different codebase.</p>
+    <table>
+      <tr><th>Option</th><th>How it works</th><th>Trade-off</th></tr>
+      <tr><td><code>claude setup-token</code></td><td>Run once on Bob's own Mac (where Claude Code is already logged in to a Max-plan account). It prints a long-lived OAuth token. Set <code>CLAUDE_CODE_OAUTH_TOKEN=&lt;token&gt;</code> on the VPS.</td><td>Keeps using Bob's existing subscription. Usage on the VPS counts against that plan's quota.</td></tr>
+      <tr><td><code>ANTHROPIC_API_KEY</code></td><td>A console.anthropic.com API key, pay-per-token, no OAuth needed at all.</td><td>Decouples cost from Bob's subscription — cleaner for a client-owned box, but it's metered billing instead of flat-rate.</td></tr>
+    </table>
+    <div class="callout gold" style="margin-top:1.25rem"><strong>Decision for Bob:</strong> which of the two above, and whose account absorbs the ongoing token cost — yours, or billed through to the TPS engagement? Worth deciding before the first real install, not after.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="bg-mid" id="gotchas">
+  <div class="container">
+    <span class="section-label">Beyond the Official Docs</span>
+    <h2>VPS-Specific Gotchas to Rehearse</h2>
+    <p class="section-lead">These aren't in the ClaudeClaw README — they're standard Linux-VPS operational issues that bite first-time deployments generally. <span class="tag open">verify on practice box</span></p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>systemd <code>--user</code> dies on logout</h3>
+        <p>The setup wizard installs a <em>user</em> systemd service. By default, user services stop when your SSH session ends — the opposite of "always on." Fix: <code>loginctl enable-linger &lt;username&gt;</code> on the VPS so user services keep running with no session attached. Easy to miss, easy to test for.</p>
+      </div>
+      <div class="card">
+        <h3>Native module build fails</h3>
+        <p><code>better-sqlite3</code> is a native Node module. A minimal/fresh Ubuntu image often lacks the compiler toolchain. Fix: <code>apt install build-essential python3 make g++</code> before <code>npm install</code> if no prebuilt binary matches the VPS's OS/arch.</p>
+      </div>
+      <div class="card">
+        <h3>Dashboard exposure</h3>
+        <p>The dashboard link embeds a password in the URL — treat it like a credential, never screenshot/share it. Recommended: Cloudflare Tunnel (free, no inbound ports opened) to reach it remotely, optionally layered with Cloudflare Access for a login wall. A raw VPS has no platform-provided public URL the way Railway/Fly do, so skipping the tunnel isn't an option here the way the README allows for those platforms.</p>
+      </div>
+      <div class="card">
+        <h3>The box is now internet-facing</h3>
+        <p>Unlike Bob's home Mac, this VPS has a public IP. Baseline hardening: SSH key-only auth (disable password login), <code>ufw</code> firewall (only 22/SSH inbound; the dashboard goes out through the tunnel, not an open port), <code>fail2ban</code>, and unattended OS security updates.</p>
+      </div>
+      <div class="card">
+        <h3>Back up the key, not just the database</h3>
+        <p><code>store/claudeclaw.db</code> is SQLCipher-encrypted with <code>DB_ENCRYPTION_KEY</code> from <code>.env</code>. A backup of the database file without the key is unrecoverable. Back up both, together, off the VPS.</p>
+      </div>
+      <div class="card">
+        <h3>Remote access for Bob</h3>
+        <p>Needs either an SSH key added to the box (ask Doug/whoever provisions it to add Bob's public key) or Tailscale for a simpler private-mesh alternative to managing SSH/firewall rules directly. Either way — this is Doug's VPS, so who gets access and at what privilege level is his call to confirm, not an assumption to build around.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="practice">
+  <div class="container">
+    <span class="section-label">Rehearse Before Touching Doug's Box</span>
+    <h2>Practice-VPS Plan</h2>
+    <p class="section-lead">You've never done a ClaudeClaw VPS install before — the one openclaw attempt doesn't transfer directly since it's a different codebase with different auth and service mechanics. Treat a cheap throwaway VPS as mandatory rehearsal, not optional caution.</p>
+    <ol class="steps">
+      <li><b>Spin up a disposable droplet.</b> DigitalOcean, Linode/Akamai, Vultr, or Hetzner — any plain Ubuntu LTS image, smallest size that meets the 1GB-recommended RAM bar. <span class="tag open">cost estimate below, verify at signup</span></li>
+      <li><b>Full install, start to finish:</b> clone the repo, <code>npm run setup</code>, pick the auth method from the table above, get the Telegram bot responding.</li>
+      <li><b>Install as a systemd <code>--user</code> service</b> and immediately run <code>loginctl enable-linger</code> — then close the SSH session and confirm the bot still responds on Telegram with the session gone.</li>
+      <li><b>Reboot test.</b> Reboot the droplet from the provider's console, wait, confirm the service comes back on its own without manual intervention.</li>
+      <li><b>Crash-restart test.</b> Kill the node process directly (<code>kill -9</code>) and confirm systemd's <code>Restart=always</code> brings it back within ~10 seconds.</li>
+      <li><b>Dashboard over Cloudflare Tunnel</b> — confirm remote access works from Bob's phone/laptop away from the VPS network.</li>
+      <li><b>Tear it down</b> once everything above passes — it's a $10-20 rehearsal, not a thing to keep paying for.</li>
+    </ol>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="bg-mid" id="cost">
+  <div class="container">
+    <span class="section-label">Cost — Estimate, Not Sourced</span>
+    <h2>Roughly Inside the $20/mo You Mentioned</h2>
+    <table>
+      <tr><th>Provider</th><th>Tier</th><th>Ballpark /mo</th></tr>
+      <tr><td>DigitalOcean</td><td>Basic Droplet, 2GB RAM / 1 vCPU</td><td>~$12</td></tr>
+      <tr><td>Linode (Akamai)</td><td>Shared 2GB</td><td>~$12</td></tr>
+      <tr><td>Vultr</td><td>Cloud Compute 2GB</td><td>~$12</td></tr>
+      <tr><td>Hetzner</td><td>CX22 (comparable spec)</td><td>~$6-7 (often cheapest)</td></tr>
+    </table>
+    <p class="section-lead" style="margin-top:1rem">2GB is recommended over the bare 1GB minimum for headroom — the dashboard, Cloudflare Tunnel daemon, and Claude Code subprocess spikes add up fast on the smallest tier. All of the above land comfortably under $20/mo. <strong>These are current-market ballparks to verify at signup, not quoted prices</strong> — consistent with not inventing false precision anywhere else in this engagement's numbers.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="open">
+  <div class="container">
+    <span class="section-label">Before Proceeding</span>
+    <h2>Open Items</h2>
+    <div class="grid-2">
+      <div class="card"><p><span class="tag open">open</span> Separate instance alongside Reagan/Dominic, or migration? (see architecture callout above)</p></div>
+      <div class="card"><p><span class="tag open">open</span> OAuth token (Bob's subscription) vs. API key (metered, separately billed) — and who absorbs the cost?</p></div>
+      <div class="card"><p><span class="tag open">open</span> Who besides Bob gets SSH/dashboard access? Tom? Doug himself?</p></div>
+      <div class="card"><p><span class="tag open">open</span> What's Doug's VPS actually specced at today — provider, RAM, OS, anything already running on it? Unknown until confirmed; the sizing above assumes a fresh box.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="skool-note">
+  <div class="container">
+    <span class="section-label">On the Skool Resource</span>
+    <h2>Note on the Early AI-dopters Link</h2>
+    <p class="section-lead">The classroom URL you sent resolved to Skool's public community shell only — member testimonials and signup links, no lesson content, no linked resources at the bottom. The actual walkthrough is behind the paywall/login and wasn't fetchable. Everything above is grounded in ClaudeClaw's own README and service scripts instead, which is the more authoritative source regardless. If there's something specific from that course you want reflected here, paste the text/steps over and I'll fold it in.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="back">← Back to the proposal</a>
+  <p style="margin-top:1.5rem">Internal planning doc · Bob Wood · Robert Wood LLC · Prepared November 2026</p>
+</footer>
+
+</body>
+</html>
