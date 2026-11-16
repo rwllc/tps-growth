@@ -131,6 +131,52 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
 
 <div class="divider"></div>
 
+<section id="community-script">
+  <div class="container">
+    <span class="section-label">Update — 2026-11-15</span>
+    <h2>A Real Installer Exists — Pulled From the Skool Community</h2>
+    <p class="section-lead">Got Chrome Bridge access and pulled the actual lesson + 7 file attachments from the "Early AI-dopters" community (Mark Kashif). This isn't theoretical anymore — there's a tested one-shot script. It changes most of the manual checklist above into "run this," but it also introduces a real trust decision that wasn't on the table before.</p>
+    <div class="callout red">
+      <strong>The decision that matters most: whose ClaudeClaw code actually runs on Doug's box.</strong> The script's default <code>REPO_URL</code> points at <code>github.com/earlyaidopters/claudeclaw-os.git</code> — a <em>private, third-party community fork/mirror</em>, not the upstream repo Bob actually runs and trusts (cloning it needs a separate short-lived <code>REPO_CLONE_TOKEN</code> from the community's "members token" page, expires in ~1hr). This software will hold TPS's full business memory and run with host-level access spawning Claude Code. Running an unofficial fork of that, sight-unseen, is a materially different trust decision than running Bob's own known-good checkout. <strong>Recommendation: point <code>REPO_URL</code> at the real upstream repo instead of the community fork</strong> unless Bob has specifically diffed the fork and knows what it changes — don't adopt the convenient default without that check.
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>What <code>install-vps.sh</code> actually automates <span class="tag fact">confirmed, real script</span></h3>
+        <ul>
+          <li>Node 20, build tools, <code>ufw</code>, <code>fail2ban</code>, <code>unattended-upgrades</code>, Tailscale — all installed</li>
+          <li>A dedicated unprivileged <code>claudeclaw</code> system user (the bot spawns Claude Code, which runs arbitrary code — never as root)</li>
+          <li>Clone + <code>npm install</code> + build + DB migrations, non-interactively</li>
+          <li>Joins Tailscale, derives the MagicDNS name, and runs <strong>Tailscale Serve</strong> — dashboard bound to <code>127.0.0.1</code>, published at <code>https://&lt;host&gt;.ts.net</code>, reachable only from tailnet devices. <strong>Supersedes the Cloudflare Tunnel idea from the original plan above</strong> — this is the validated pattern.</li>
+          <li><code>systemd</code> service with real sandboxing (<code>NoNewPrivileges</code>, <code>ProtectSystem=strict</code>, <code>ProtectHome</code>, scoped <code>ReadWritePaths</code>) + <code>Restart=always</code></li>
+          <li>Three SSH postures: <code>public</code> (key-only + fail2ban, default), <code>tailscale-only</code> (blocks public port 22 entirely — strongest, but confirm the VPS provider's browser/VNC console works as a recovery path first), or <code>off</code></li>
+          <li><strong>Idempotent</strong> — re-running updates in place. Carries over <code>DASHBOARD_TOKEN</code>, <code>DB_ENCRYPTION_KEY</code>, and per-agent <code>*_BOT_TOKEN</code> across re-runs. <strong>Any other hand-edited <code>.env</code> key is silently lost on the next run</strong> — real operational gotcha, not hypothetical.</li>
+          <li><strong>Built and tested for Hostinger specifically.</strong> Its documented lockout-recovery path is Hostinger's hPanel browser/VNC console — if Doug's actual VPS is a different provider, that specific recovery step needs a provider-appropriate substitute.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Migration guide gotchas <span class="tag fact">from local-to-vps-migration.html</span></h3>
+        <p>For if this VPS instance ever absorbs the existing Reagan/Dominic laptop data rather than starting fresh (still an open question above):</p>
+        <ul>
+          <li>Version-match check before anything else — the laptop and VPS builds must agree</li>
+          <li>An explicit "encryption key decision" step — the migrated DB's <code>DB_ENCRYPTION_KEY</code> has to travel with it, not get regenerated</li>
+          <li>A documented "duplicate schedules" bug to watch for after merging two stores</li>
+          <li>Ownership/permissions gotchas moving files between a laptop user and the VPS's dedicated service user</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Mattermost option for Tom's access <span class="tag fact">from claudeclaw-mattermost-setup.html</span></h3>
+        <p>A documented pattern for self-hosted Mattermost as a private team-chat gateway: one bot account, per-channel routing to different agents, nobody needing Doug's personal Telegram. Directly answers the "who else gets access" open item if Tom needs his own lane — ~20 min Docker Compose setup, 5 lines of <code>.env</code>, <code>/invite</code> the bot to a channel.</p>
+      </div>
+      <div class="card">
+        <h3>All 7 source files, saved</h3>
+        <p>Downloaded with Bob's go-ahead and moved into <code>Doug Horner-TPS/skool-vps-resources/</code> on the Drive (not committed to this public repo — community-authored scripts with a private upstream dependency don't belong in a public client-proposal repo). <code>install-vps.sh</code>, <code>claudeclaw-deploy.conf.example</code>, <code>README.md</code>, <code>vps-deployment-guide.html</code>, <code>local-to-vps-migration.html</code>, <code>claudeclaw-mattermost-setup.html</code>, <code>mattermost-skool-post.md</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <section class="bg-mid" id="gotchas">
   <div class="container">
     <span class="section-label">Beyond the Official Docs</span>
@@ -146,8 +192,8 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
         <p><code>better-sqlite3</code> is a native Node module. A minimal/fresh Ubuntu image often lacks the compiler toolchain. Fix: <code>apt install build-essential python3 make g++</code> before <code>npm install</code> if no prebuilt binary matches the VPS's OS/arch.</p>
       </div>
       <div class="card">
-        <h3>Dashboard exposure</h3>
-        <p>The dashboard link embeds a password in the URL — treat it like a credential, never screenshot/share it. Recommended: Cloudflare Tunnel (free, no inbound ports opened) to reach it remotely, optionally layered with Cloudflare Access for a login wall. A raw VPS has no platform-provided public URL the way Railway/Fly do, so skipping the tunnel isn't an option here the way the README allows for those platforms.</p>
+        <h3>Dashboard exposure <span class="tag open">superseded below</span></h3>
+        <p>The dashboard link embeds a password in the URL — treat it like a credential, never screenshot/share it. Originally recommended Cloudflare Tunnel here; the real community script instead uses <strong>Tailscale Serve</strong> (see the update section below) — bind the dashboard to loopback, publish it only to Bob's/Doug's own tailnet devices over real HTTPS. Better fit than a public tunnel for something this sensitive.</p>
       </div>
       <div class="card">
         <h3>The box is now internet-facing</h3>
@@ -178,7 +224,7 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
       <li><b>Install as a systemd <code>--user</code> service</b> and immediately run <code>loginctl enable-linger</code> — then close the SSH session and confirm the bot still responds on Telegram with the session gone.</li>
       <li><b>Reboot test.</b> Reboot the droplet from the provider's console, wait, confirm the service comes back on its own without manual intervention.</li>
       <li><b>Crash-restart test.</b> Kill the node process directly (<code>kill -9</code>) and confirm systemd's <code>Restart=always</code> brings it back within ~10 seconds.</li>
-      <li><b>Dashboard over Cloudflare Tunnel</b> — confirm remote access works from Bob's phone/laptop away from the VPS network.</li>
+      <li><b>Run the real installer</b> (<code>install-vps.sh</code>, pointed at a repo Bob actually trusts — see the fork/trust decision below) and confirm the dashboard is reachable over Tailscale Serve from Bob's phone/laptop away from the VPS network.</li>
       <li><b>Tear it down</b> once everything above passes — it's a $10-20 rehearsal, not a thing to keep paying for.</li>
     </ol>
   </div>
@@ -197,7 +243,7 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
       <tr><td>Vultr</td><td>Cloud Compute 2GB</td><td>~$12</td></tr>
       <tr><td>Hetzner</td><td>CX22 (comparable spec)</td><td>~$6-7 (often cheapest)</td></tr>
     </table>
-    <p class="section-lead" style="margin-top:1rem">2GB is recommended over the bare 1GB minimum for headroom — the dashboard, Cloudflare Tunnel daemon, and Claude Code subprocess spikes add up fast on the smallest tier. All of the above land comfortably under $20/mo. <strong>These are current-market ballparks to verify at signup, not quoted prices</strong> — consistent with not inventing false precision anywhere else in this engagement's numbers.</p>
+    <p class="section-lead" style="margin-top:1rem">2GB is recommended over the bare 1GB minimum for headroom — the dashboard, Tailscale daemon, and Claude Code subprocess spikes add up fast on the smallest tier. All of the above land comfortably under $20/mo. <strong>These are current-market ballparks to verify at signup, not quoted prices</strong> — consistent with not inventing false precision anywhere else in this engagement's numbers.</p>
   </div>
 </section>
 
@@ -212,6 +258,8 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
       <div class="card"><p><span class="tag open">open</span> OAuth token (Bob's subscription) vs. API key (metered, separately billed) — and who absorbs the cost?</p></div>
       <div class="card"><p><span class="tag open">open</span> Who besides Bob gets SSH/dashboard access? Tom? Doug himself?</p></div>
       <div class="card"><p><span class="tag open">open</span> What's Doug's VPS actually specced at today — provider, RAM, OS, anything already running on it? Unknown until confirmed; the sizing above assumes a fresh box.</p></div>
+      <div class="card"><p><span class="tag open">open</span> <strong>Mac Mini vs. VPS — not actually settled.</strong> At the Nov 12 proposal call, Bob himself recommended a dedicated always-on Mac Mini over a VPS, citing admin-access limits — and Doug's current VPS/firewall are managed by an outside IT company. This whole page assumes VPS because that's where the research momentum went; it was never formally decided over the Mac Mini alternative.</p></div>
+      <div class="card"><p><span class="tag open">open</span> Community-fork trust: point the installer's <code>REPO_URL</code> at Bob's own known-good ClaudeClaw checkout, or knowingly adopt the <code>earlyaidopters/claudeclaw-os</code> fork? (see the fork/trust callout above)</p></div>
     </div>
   </div>
 </section>
@@ -220,9 +268,9 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
 
 <section id="skool-note">
   <div class="container">
-    <span class="section-label">On the Skool Resource</span>
-    <h2>Note on the Early AI-dopters Link</h2>
-    <p class="section-lead">The classroom URL you sent resolved to Skool's public community shell only — member testimonials and signup links, no lesson content, no linked resources at the bottom. The actual walkthrough is behind the paywall/login and wasn't fetchable. Everything above is grounded in ClaudeClaw's own README and service scripts instead, which is the more authoritative source regardless. If there's something specific from that course you want reflected here, paste the text/steps over and I'll fold it in.</p>
+    <span class="section-label">On the Skool Resource — Resolved 2026-11-15</span>
+    <h2>Update: the Early AI-dopters Content Is In</h2>
+    <p class="section-lead">The first pass at this plan noted the classroom URL only resolved to Skool's public shell via WebFetch — no login, no lesson content. With Chrome Bridge access (granted via Piper), got the real thing: the full lesson text for all three pinned posts, plus all 7 file attachments downloaded and reviewed (see the update section above). That content is now folded in above — most notably the real <code>install-vps.sh</code> installer, Tailscale Serve as the validated dashboard-access pattern, and the community-fork trust decision it introduces.</p>
   </div>
 </section>
 
