@@ -89,6 +89,29 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
 
 <div class="divider"></div>
 
+<section class="bg-mid" id="mac-mini-vs-vps">
+  <div class="container">
+    <span class="section-label">Resolved (mostly) — 2026-11-15</span>
+    <h2>Mac Mini vs. VPS — Full Comparison</h2>
+    <p class="section-lead">At the Nov 12 proposal call, Bob himself recommended a dedicated always-on Mac Mini <em>over</em> a VPS, citing admin-access limits — and Doug's current VPS/firewall are managed by an outside IT company. Everything in this page up to now has been VPS-flavored by default rather than by an actual decision. Here's the real comparison.</p>
+    <table>
+      <tr><th>Mac Mini (staged at Bob's, then moved to Tacoma)</th><th>Doug's existing VPS (IT-company managed)</th></tr>
+      <tr><td><strong>Pro:</strong> no third-party gatekeeper on changes</td><td><strong>Con:</strong> this is the actual reason Bob raised Mac Mini in the first place — meaningful changes likely need the IT company's sign-off</td></tr>
+      <tr><td><strong>Pro:</strong> <code>claude login</code> works natively — no headless-auth problem at all</td><td><strong>Con:</strong> headless-auth tax — <code>claude setup-token</code> vs. <code>ANTHROPIC_API_KEY</code>, needs a billing-owner decision</td></tr>
+      <tr><td><strong>Pro:</strong> never publicly exposed — reached only via Tailscale</td><td><strong>Con:</strong> public-facing by nature, even hardened</td></tr>
+      <tr><td><strong>Pro:</strong> runs Bob's own code directly, no fork-trust question</td><td><strong>Con:</strong> the best installer's default source is an unaudited third-party fork unless redirected</td></tr>
+      <tr><td><strong>Con:</strong> single point of physical failure tied to Bob's home power/internet</td><td><strong>Pro:</strong> real data-center power/network redundancy</td></tr>
+      <tr><td><strong>Con:</strong> "move it to Tacoma" likely needs the IT company's cooperation anyway (past the Barracuda firewall) — the gatekeeper problem mostly comes back once it relocates</td><td><strong>Pro:</strong> already provisioned, already paid for, never needs physical shipping</td></tr>
+      <tr><td><strong>Con:</strong> chain-of-custody optics, given the CUI conversation already in play</td><td><strong>Pro:</strong> scales with a resize, not new hardware</td></tr>
+    </table>
+    <div class="callout gold" style="margin-top:1.25rem">
+      <strong>Recommendation — a third option, better than the binary above:</strong> a <strong>brand-new VPS Bob personally provisions and fully controls</strong> (e.g. Hostinger, ~$20/mo), entirely separate from Doug's existing IT-managed infrastructure. It keeps every Mac Mini advantage that actually mattered (full admin control, no third-party gatekeeper, clean CUI isolation — it never touches Doug's existing network) while adding real cloud reliability, easy scaling, and zero hardware-shipping logistics. At ~$20/mo, cost was never really the deciding factor either way. What's left is small and solvable: pick a Claude auth method, point the installer at Bob's own repo instead of the community fork, apply the hardening the installer already provides. <strong>Still needs Bob's explicit sign-off</strong> — this is a recommendation, not yet a locked decision.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <section class="bg-mid" id="facts">
   <div class="container">
     <span class="section-label">What ClaudeClaw Actually Needs</span>
@@ -258,7 +281,7 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
       <div class="card"><p><span class="tag open">open</span> OAuth token (Bob's subscription) vs. API key (metered, separately billed) — and who absorbs the cost?</p></div>
       <div class="card"><p><span class="tag open">open</span> Who besides Bob gets SSH/dashboard access? Tom? Doug himself?</p></div>
       <div class="card"><p><span class="tag open">open</span> What's Doug's VPS actually specced at today — provider, RAM, OS, anything already running on it? Unknown until confirmed; the sizing above assumes a fresh box.</p></div>
-      <div class="card"><p><span class="tag open">open</span> <strong>Mac Mini vs. VPS — not actually settled.</strong> At the Nov 12 proposal call, Bob himself recommended a dedicated always-on Mac Mini over a VPS, citing admin-access limits — and Doug's current VPS/firewall are managed by an outside IT company. This whole page assumes VPS because that's where the research momentum went; it was never formally decided over the Mac Mini alternative.</p></div>
+      <div class="card"><p><span class="tag open">open</span> <strong>Mac Mini vs. VPS — recommendation made, not yet signed off.</strong> See the comparison above: leaning toward a Bob-owned, standalone VPS rather than either a Mac Mini or Doug's IT-managed box. Needs Bob's explicit confirmation before this becomes the plan of record.</p></div>
       <div class="card"><p><span class="tag open">open</span> Community-fork trust: point the installer's <code>REPO_URL</code> at Bob's own known-good ClaudeClaw checkout, or knowingly adopt the <code>earlyaidopters/claudeclaw-os</code> fork? (see the fork/trust callout above)</p></div>
     </div>
   </div>
