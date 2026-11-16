@@ -107,6 +107,12 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
     <div class="callout gold" style="margin-top:1.25rem">
       <strong>Recommendation — a third option, better than the binary above:</strong> a <strong>brand-new VPS Bob personally provisions and fully controls</strong> (e.g. Hostinger, ~$20/mo), entirely separate from Doug's existing IT-managed infrastructure. It keeps every Mac Mini advantage that actually mattered (full admin control, no third-party gatekeeper, clean CUI isolation — it never touches Doug's existing network) while adding real cloud reliability, easy scaling, and zero hardware-shipping logistics. At ~$20/mo, cost was never really the deciding factor either way. What's left is small and solvable: pick a Claude auth method, point the installer at Bob's own repo instead of the community fork, apply the hardening the installer already provides. <strong>Still needs Bob's explicit sign-off</strong> — this is a recommendation, not yet a locked decision.
     </div>
+
+    <h3 style="margin-top:2rem">Aspire API access — confirmed, 2026-11-16</h3>
+    <p class="section-lead">Checked directly rather than assumed: Aspire does have a real REST API (<code>cloud-api.youraspire.com</code>, documented Swagger, client ID + API key auth) — but <strong>access is gated to Enterprise-tier Aspire customers only</strong>, with no webhooks, SDK, or sandbox even at that tier. <span class="tag open">open</span> Confirm what Aspire plan TPS is actually on — if not Enterprise, Aspire integration specifically falls back to browser automation rather than a clean API call.</p>
+    <div class="callout blue">
+      <strong>If Aspire is locked out, VPS still isn't disqualified — it loses one specific edge, not the whole case.</strong> <em>Headless</em> browser automation (invisible, scripted — not a GUI) runs fine on a bare VPS; most other integrations (Microsoft Graph for M365, SAM.gov bid monitoring, the bot core) are unaffected regardless of host. UI fragility itself is generic to any host, Mac Mini included. The one real VPS-specific wrinkle: <strong>cloud-datacenter IP ranges get flagged by anti-bot/fraud-detection systems far more readily than a residential or business-network IP.</strong> If Aspire has meaningful bot-detection on login (unconfirmed, but plausible for a SaaS with real paying accounts), automation from a VPS is more likely to get challenged than the same automation running from Doug's own office network — exactly where Tom and Doug already log in daily, so it reads as normal traffic. A Mac Mini sitting at TPS's office inherits that "looks like a normal user" advantage for free. Not necessarily all-or-nothing: a plausible outcome is "VPS for everything else, Aspire specifically runs from somewhere on TPS's own network" — speculative until Aspire's actual bot-detection posture is confirmed.
+    </div>
   </div>
 </section>
 
@@ -149,6 +155,7 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
       <tr><td><code>ANTHROPIC_API_KEY</code></td><td>A console.anthropic.com API key, pay-per-token, no OAuth needed at all.</td><td>Decouples cost from Bob's subscription — cleaner for a client-owned box, but it's metered billing instead of flat-rate.</td></tr>
     </table>
     <div class="callout gold" style="margin-top:1.25rem"><strong>Decision for Bob:</strong> which of the two above, and whose account absorbs the ongoing token cost — yours, or billed through to the TPS engagement? Worth deciding before the first real install, not after.</div>
+    <p class="section-lead" style="margin-top:1rem"><strong>Clarification:</strong> a VPS does not force pay-per-token billing. <code>setup-token</code> preserves the exact same flat-fee Max-plan subscription used on a Mac Mini — it's just generated locally and copied over rather than logged in interactively on the box itself. <code>ANTHROPIC_API_KEY</code> is an optional alternative if separate/metered billing is specifically wanted, not something VPS hosting requires. Unconfirmed whether OpenAI/Codex has an equivalent portable-token mechanism — don't assume parity with Claude's <code>setup-token</code> if OpenAI ends up in play.</p>
   </div>
 </section>
 
@@ -283,6 +290,8 @@ footer{padding:2.5rem 2rem;text-align:center;font-size:0.78rem;color:var(--faint
       <div class="card"><p><span class="tag open">open</span> What's Doug's VPS actually specced at today — provider, RAM, OS, anything already running on it? Unknown until confirmed; the sizing above assumes a fresh box.</p></div>
       <div class="card"><p><span class="tag open">open</span> <strong>Mac Mini vs. VPS — recommendation made, not yet signed off.</strong> See the comparison above: leaning toward a Bob-owned, standalone VPS rather than either a Mac Mini or Doug's IT-managed box. Needs Bob's explicit confirmation before this becomes the plan of record.</p></div>
       <div class="card"><p><span class="tag open">open</span> Community-fork trust: point the installer's <code>REPO_URL</code> at Bob's own known-good ClaudeClaw checkout, or knowingly adopt the <code>earlyaidopters/claudeclaw-os</code> fork? (see the fork/trust callout above)</p></div>
+      <div class="card"><p><span class="tag open">open</span> What Aspire plan tier is TPS actually on? Determines whether Aspire integration is a clean API call (Enterprise tier) or falls back to browser automation (any lower tier) — see the Aspire callout above.</p></div>
+      <div class="card"><p><span class="tag open">open</span> Does Aspire have meaningful bot-detection on login? Unconfirmed — determines whether Aspire-specific automation is safe to run from a VPS's datacenter IP or needs to originate from TPS's own office network instead.</p></div>
     </div>
   </div>
 </section>
